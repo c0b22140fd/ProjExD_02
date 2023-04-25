@@ -39,7 +39,8 @@ def main():
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     bb_img = pg.Surface((20,20))  # 練習１
     pg.draw.circle(bb_img,(255,0,0),(10,10),10)  # 練習１
-    bb_img.set_colorkey((0,0,0))  # 練習１
+    bb_img.set_colorkey((0,0,0))  # 弾の透過
+    bb_imgs =[]  # 追加機能２
     x,y = random.randint(0,1600),random.randint(0,900)  # 練習２
     screen.blit(bb_img,(x,y))  # 練習２
     vx, vy = +1,+1
@@ -48,6 +49,16 @@ def main():
     kk_rect = kk_img.get_rect()  # 練習４
     kk_rect.center = 900,400  # 練習4
     tmr = 0
+    for r in range(1,11):
+        bb_img = pg.Surface((20*r,20*r))
+        pg.draw.circle(bb_img,(255,0,0),(10*r,10*r),10*r)
+        bb_img.set_colorkey((0,0,0))
+        bb_imgs.append(bb_img)
+
+
+
+
+
 
     while True:
         for event in pg.event.get():
@@ -57,7 +68,7 @@ def main():
         tmr += 1
 
         #　追加機能２
-        avx,avy = vx*accs[min(tmr//1500,9)], vy*accs[min(tmr//1500,9)]
+        avx,avy = vx*accs[min(tmr//4000,9)], vy*accs[min(tmr//4000,9)]
 
 
         # 練習４
@@ -81,15 +92,21 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
+
+        
+         
         screen.blit(bb_img, bb_rect)  #　練習３
+        bb_img = bb_imgs[min(tmr//1500,9)]
+        screen.blit(bb_img, bb_rect)
+        screen.blit(tmr, (100,200))
+
         if kk_rect.colliderect(bb_rect):
 
             #追加機能３
             kk_img = pg.image.load("ex02/fig/8.png")
             kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
             screen.blit(kk_img, kk_rect)
-
-            return
+            
 
         pg.display.update()
         clock.tick(1000)
