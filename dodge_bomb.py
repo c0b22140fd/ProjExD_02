@@ -10,8 +10,8 @@ delta = {
     pg.K_DOWN : (0,+1),
     pg.K_LEFT : (-1,0),
     pg.K_RIGHT : (+1,0),
+   }
 
-}
 
 accs = [a for a in range(1,11)]
 
@@ -22,7 +22,6 @@ def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect) -> tuple[bool,bool]:
     引数２　こうかとん　または　爆弾surfaceのrect
     戻り値　縦方向　横方向のはみ出し測定結果。（画面内True、画面外False）
     """
-
     yoko,tate = True, True
     if obj_rct.left < scr_rct.left or scr_rct.right < obj_rct.right:
         yoko = False
@@ -31,10 +30,7 @@ def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect) -> tuple[bool,bool]:
     return yoko,tate
 
 
-num = 3
-
 def main():
-
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))
     clock = pg.time.Clock()
@@ -49,14 +45,9 @@ def main():
     vx, vy = +1,+1
     bb_rect = bb_img.get_rect()  # 練習3 対応するrectを作る
     bb_rect.center = x,y  # 練習３ 初期座標を乱数に設定している。
-    
-
-
     kk_rect = kk_img.get_rect()  # 練習４
-    kk_rect.center = 900,400  # 練習４
-
+    kk_rect.center = 900,400  # 練習4
     tmr = 0
-
 
     while True:
         for event in pg.event.get():
@@ -65,7 +56,7 @@ def main():
 
         tmr += 1
 
-        #演習課題２
+        #　追加機能２
         avx,avy = vx*accs[min(tmr//1500,9)], vy*accs[min(tmr//1500,9)]
 
 
@@ -81,21 +72,16 @@ def main():
                 if key_lst[k]:
                     kk_rect.move_ip(-mv[0],-mv[1])
 
+
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rect)
         bb_rect.move_ip(avx,avy)
         yoko,tate = check_bound(screen.get_rect(),bb_rect)
-
-
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
-
-
         screen.blit(bb_img, bb_rect)  #　練習３
-
-
         if kk_rect.colliderect(bb_rect):
 
             #追加機能３
@@ -103,7 +89,7 @@ def main():
             kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
             screen.blit(kk_img, kk_rect)
 
-            #return
+            return
 
         pg.display.update()
         clock.tick(1000)
