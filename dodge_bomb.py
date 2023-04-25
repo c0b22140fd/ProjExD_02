@@ -98,7 +98,6 @@ def main():
         screen.blit(bb_img, bb_rect)  #　練習３
         bb_img = bb_imgs[min(tmr//1500,9)]
         screen.blit(bb_img, bb_rect)
-        screen.blit(tmr, (100,200))
 
         if kk_rect.colliderect(bb_rect):
 
@@ -106,7 +105,9 @@ def main():
             kk_img = pg.image.load("ex02/fig/8.png")
             kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
             screen.blit(kk_img, kk_rect)
-            
+
+            vx =0 
+            vy = 0
 
         pg.display.update()
         clock.tick(1000)
