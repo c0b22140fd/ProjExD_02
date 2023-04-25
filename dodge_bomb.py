@@ -13,6 +13,7 @@ delta = {
 
 }
 
+accs = [a for a in range(1,11)]
 
 def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect) -> tuple[bool,bool]:
     """
@@ -31,6 +32,7 @@ def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect) -> tuple[bool,bool]:
 
 
 def main():
+
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))
     clock = pg.time.Clock()
@@ -45,6 +47,9 @@ def main():
     vx, vy = +1,+1
     bb_rect = bb_img.get_rect()  # 練習3 対応するrectを作る
     bb_rect.center = x,y  # 練習３ 初期座標を乱数に設定している。
+    
+
+
     kk_rect = kk_img.get_rect()  # 練習４
     kk_rect.center = 900,400  # 練習４
 
@@ -58,12 +63,16 @@ def main():
 
         tmr += 1
 
+        #演習課題２
+        avx,avy = vx*accs[min(tmr//2000,9)], vy*accs[min(tmr//2000,9)]
+
 
         # 練習４
         key_lst=pg.key.get_pressed()
         for k,mv in delta.items():
             if key_lst[k]:
                 kk_rect.move_ip(mv)
+
 
         if check_bound(screen.get_rect(),kk_rect) != (True,True) :
             for k,mv in delta.items():
@@ -72,14 +81,21 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rect)
-        bb_rect.move_ip(vx,vy)
+
+        bb_rect.move_ip(avx,avy)
         yoko,tate = check_bound(screen.get_rect(),bb_rect)
+
+
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
+
         screen.blit(bb_img, bb_rect)  #　練習３
+
+
         if kk_rect.colliderect(bb_rect):
+
             return
 
         pg.display.update()
