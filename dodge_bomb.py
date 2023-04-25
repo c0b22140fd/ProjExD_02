@@ -31,6 +31,8 @@ def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect) -> tuple[bool,bool]:
     return yoko,tate
 
 
+num = 3
+
 def main():
 
     pg.display.set_caption("逃げろ！こうかとん")
@@ -64,7 +66,7 @@ def main():
         tmr += 1
 
         #演習課題２
-        avx,avy = vx*accs[min(tmr//2000,9)], vy*accs[min(tmr//2000,9)]
+        avx,avy = vx*accs[min(tmr//1500,9)], vy*accs[min(tmr//1500,9)]
 
 
         # 練習４
@@ -81,7 +83,6 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rect)
-
         bb_rect.move_ip(avx,avy)
         yoko,tate = check_bound(screen.get_rect(),bb_rect)
 
@@ -91,12 +92,18 @@ def main():
         if not tate:
             vy *= -1
 
+
         screen.blit(bb_img, bb_rect)  #　練習３
 
 
         if kk_rect.colliderect(bb_rect):
 
-            return
+            #追加機能３
+            kk_img = pg.image.load("ex02/fig/8.png")
+            kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+            screen.blit(kk_img, kk_rect)
+
+            #return
 
         pg.display.update()
         clock.tick(1000)
